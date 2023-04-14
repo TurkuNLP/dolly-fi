@@ -25,6 +25,8 @@ python3 jsonl2doc.py original-data/databricks-dolly-15k.jsonl
 
 ```
 python3 doc2jsonl.py \
+    --add-id \
+    --include-original \
     original-data/databricks-dolly-15k.jsonl \
     dolly-doc-out/dolly-000*.docx \
     > dolly-15k-fi.jsonl
