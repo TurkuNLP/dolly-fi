@@ -11,6 +11,8 @@ def argparser():
     ap = ArgumentParser()
     ap.add_argument('jsonl', help='original-data/databricks-dolly-15k.jsonl')
     ap.add_argument('docxs', nargs="+", help='All translated docx files in correct order')
+    ap.add_argument('--include-original', action='store_true')
+    ap.add_argument('--add-id', action='store_true')
     return ap
 
 
@@ -78,6 +80,15 @@ def main(argv):
             assert o['context'] and not o['context'].isspace(), 'desync'
 
         d['category'] = o['category']
+
+        if args.add_id:
+            a = { 'id': f'dolly-fi:{i}' }
+            a.update(d)
+            d = a
+
+        if args.include_original:
+            for k in ('instruction', 'context', 'response'):
+                d[f'orig_{k}'] = o[k]
 
         print(json.dumps(d, ensure_ascii=False))
     count = i + 1
